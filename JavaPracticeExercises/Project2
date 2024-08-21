@@ -1,7 +1,7 @@
-// A simple Task Manager practice program.
+// A simple Task Manager practice program. Includes first attempt at writing and loading filex.
 
 
-public class Task {
+public class Task implements Serializable {
 
     private String name;
     private int priority;
@@ -154,6 +154,39 @@ public class TaskManager {
 
         list = new LinkedList<>(taskArrayList);
 
+    }
+
+
+    public void saveTasksToFile(String filename) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+            for (Task task: list) {
+                writer.write(task.getName() + "," + task.getPriority()+ "," + task.isCompleted());
+                writer.newLine();
+            }
+            System.out.println("Tasks written to: " + filename);
+        } catch (IOException e) {
+            System.out.println("Error while saving tasks to file: " + e.getMessage());
+        }
+    }
+
+
+    public void loadTasksFromFile(String filename) {
+        try (Scanner scanner = new Scanner(new File(filename))) {
+            list.clear();
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                String[] parts = line.split(",");
+                String name = parts[0];
+                int priority = Integer.parseInt(parts[1]);
+                boolean isCompleted = Boolean.parseBoolean(parts[2]);
+                list.addLast(new Task(name, priority, isCompleted));
+            }
+            System.out.println("Tasks read from: " + filename);
+        } catch (IOException e) {
+            System.out.println("Error while loading tasks from file: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Error while loading tasks from file: " + e.getMessage());
+        }
     }
 
 
