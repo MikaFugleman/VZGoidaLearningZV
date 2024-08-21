@@ -1,3 +1,4 @@
-Learning Java. Project1.
+Learning Java.
 
-Movie collection manager with user interface.
+
+Collection of exercises done.
