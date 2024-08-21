@@ -1,0 +1,298 @@
+public class Task {
+
+    private String name;
+    private int priority;
+    private boolean isCompleted;
+
+    public Task (String name, int priority, boolean isCompleted) {
+        this.name = name;
+        this.priority = priority;
+        this.isCompleted = isCompleted;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
+    public boolean isCompleted() {
+        return isCompleted;
+    }
+
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
+    }
+
+
+    @Override
+    public String toString() {
+        return
+                "name='" + name + '\'' +
+                ", priority=" + priority +
+                ", isCompleted=" + isCompleted +
+                '}';
+    }
+}
+
+
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.*;
+import java.util.*;
+
+public class TaskManager {
+
+    private LinkedList<Task> list;
+
+
+    public TaskManager() {
+        this.list = new LinkedList<>();
+    }
+
+
+    public void addTask(Task task) {
+        list.addLast(task);
+        System.out.println("Task :" + task + " added.");
+    }
+
+    public void removeTask(String taskName) {
+
+        Iterator<Task> iterator = list.iterator();
+
+        while (iterator.hasNext()) {
+            Task task = iterator.next();
+
+            if (task.getName().equalsIgnoreCase(taskName)) {
+                iterator.remove();
+                System.out.println("Task: " + task.getName() + " removed.");
+            }
+        }
+
+    }
+
+
+    public void markTaskCompleted(String taskName) {
+        Iterator<Task> iterator = list.iterator();
+
+        while (iterator.hasNext()) {
+            Task task = iterator.next();
+
+            if (task.getName().equalsIgnoreCase(taskName)) {
+                if (!task.isCompleted()) {
+                    task.setCompleted(true);
+                    System.out.println("\nTask: " + task.getName().toUpperCase() + " is set to COMPLETE.");
+                }
+
+            }
+        }
+    }
+
+    public void displayAllTasks() {
+        System.out.println("\nDisplaying all tasks in the list below: ");
+        for (Task task: list) {
+            System.out.println(task);
+        }
+    }
+
+
+    public void prioritizeTask(String taskName) {
+
+        Task taskToPrioritize = null;
+        for (Task task : list) {
+            if (task.getName().equalsIgnoreCase(taskName)) {
+                taskToPrioritize = task;
+                break;
+            }
+        }
+
+        if (taskToPrioritize == null) {
+            System.out.println("\nTask not found: " + taskName);
+            return;
+        }
+
+        taskToPrioritize.setPriority(1);
+        list.remove(taskToPrioritize);
+        list.addFirst(taskToPrioritize);
+
+        System.out.println("\nTask prioritized: " + taskToPrioritize);
+
+    }
+
+    public void displayPendingTasks() {
+        System.out.println("Pending (incomplete) tasks: ");
+        for (Task task: list) {
+            if (!task.isCompleted()) {
+                System.out.println(task);
+            }
+        }
+    }
+
+    public void sortTasksByPriority () {
+        ArrayList<Task> taskArrayList = new ArrayList<>(list);
+        taskArrayList.sort(new Comparator<Task>() {
+            @Override
+            public int compare(Task o1, Task o2) {
+                return Integer.compare(o1.getPriority(), o2.getPriority());
+            }
+        });
+
+        list = new LinkedList<>(taskArrayList);
+
+    }
+
+
+
+    public void printMenu() {
+
+        System.out.println("""
+                MENU:
+                \n Please enter:
+                                
+                \t(A)dd task
+                \t(R)emove task
+                \t(C)omplete task
+                \t(D)isplay all tasks
+                \t(P)ending tasks
+                \tPr(I)oritize task
+                \t(S)ort tasks
+                                
+                \t(M)enu
+                \t(Q)uit
+                """);
+
+    }
+
+
+    public static void menu() {
+
+        TaskManager t1 = new TaskManager();
+        Scanner scanner = new Scanner(System.in);
+
+        t1.printMenu();
+
+
+
+        while (true) {
+
+            String userResponse = scanner.nextLine();
+
+            switch (userResponse.toUpperCase().charAt(0)) {
+
+                case 'A': {
+
+                    System.out.println("Adding task. Please enter task name: ");
+                    String taskName = scanner.nextLine().toUpperCase();
+
+                    System.out.println("Please enter task priority(positive integer number): ");
+                    int priority = -1;
+                    while (true) {
+                        try {
+                            priority = scanner.nextInt();
+
+                            // CHECKING IF PRIO IS POSITIVE
+                            if (priority>0) {
+                                scanner.nextLine();
+                                break;
+                            } else {
+                                System.out.println("Priority must be a positive integer number. Try again: ");
+                            }
+                        } catch (InputMismatchException e) {
+                            System.out.println("Invalid input. Please enter a positive integer.");
+                            scanner.nextLine();
+                        }
+                    }
+
+                    System.out.println("Please indicate task completion status: true / false");
+                    boolean isComplete;
+                    while (true) {
+                        try {
+                            isComplete = scanner.nextBoolean();
+                            scanner.nextLine();
+                            break;
+                        } catch (InputMismatchException e) {
+                            System.out.println("Invalid status. Please enter true or false.");
+                            scanner.nextLine();
+                        }
+                    }
+
+
+                    t1.addTask(new Task(taskName, priority, isComplete));
+                    break;
+                }
+                case 'R': {
+                    System.out.println("Removing task. Please enter task name: ");
+                    String taskName = scanner.nextLine().toUpperCase();
+                    t1.removeTask(taskName);
+                    scanner.nextLine();
+                    break;
+                }
+
+                case 'C': {
+                    System.out.println("Enter task name to set it's status to Complete: ");
+                    String taskName = scanner.nextLine().toUpperCase();
+                    t1.markTaskCompleted(taskName);
+                    break;
+                }
+
+                case 'D': {
+                    t1.displayAllTasks();
+                    break;
+
+                }
+
+                case 'P': {
+                    t1.displayPendingTasks();
+                    break;
+                }
+
+                case 'I': {
+                    System.out.println("Please enter task name to prioritize: ");
+                    String taskName = scanner.nextLine().toUpperCase();
+                    t1.prioritizeTask(taskName);
+                    break;
+                }
+
+                case 'S': {
+                    t1.sortTasksByPriority();
+                    break;
+                }
+
+                case 'M': {
+                    t1.printMenu();
+                    break;
+                }
+
+                case 'Q': {
+                    scanner.close();
+                    System.out.println("Quitting...");
+                    return;
+                }
+
+                default: {
+                    System.out.println("Input not recognized. Try again.");
+                    break;
+                }
+            }
+
+
+
+        }
+    }
+
+
+}
+
+
