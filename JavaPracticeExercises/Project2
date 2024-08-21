@@ -1,4 +1,4 @@
-// A simple Task Manager practice program. Includes first attempt at writing and loading filex.
+// A simple Task Manager practice program. Includes first attempt at writing and loading files.
 
 
 public class Task implements Serializable {
