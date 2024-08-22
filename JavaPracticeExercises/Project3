@@ -1,7 +1,9 @@
 // Another project with LinkedList. 
+
 // Includes several new methods: 
 // capitalizeFirstLetter - to capitalize initial letters in a String.
 // validateName/Phone/Email - methods to validate user input.
+// write/readContacts - methods to write LinkedList elements to a file and read from it.
 
 
 import java.io.Serializable;
