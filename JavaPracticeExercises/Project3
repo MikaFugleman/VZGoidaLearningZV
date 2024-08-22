@@ -4,6 +4,7 @@
 // capitalizeFirstLetter - to capitalize initial letters in a String.
 // validateName/Phone/Email - methods to validate user input.
 // write/readContacts - methods to write LinkedList elements to a file and read from it.
+// sortContacts - method to sort LinkedList elements alphabetically by converting LinkedList to ArrayList and back. Not sure if efficient.
 
 
 import java.io.Serializable;
