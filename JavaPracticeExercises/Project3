@@ -1,4 +1,7 @@
-// Another project with LinkedList. Includes a method 'capitalizeFirstLetter' along with other standard methods. 
+// Another project with LinkedList. 
+// Includes several new methods: 
+// capitalizeFirstLetter - to capitalize initial letters in a String.
+// validateName/Phone/Email - methods to validate user input.
 
 
 import java.io.Serializable;
