@@ -1,1 +1,103 @@
+import java.util.*;
 
+public class MovieCollectionManager {
+
+    private ArrayList<Movie> movieArrayList;
+    private LinkedList<Movie> movieLinkedList;
+
+
+    public MovieCollectionManager() {
+        this.movieLinkedList = new LinkedList<>();
+        this.movieArrayList = new ArrayList<>();
+    }
+
+    @Override
+    public String toString() {
+        return "\nMovies in: \n" +
+                "\n\t ArrayList: " + movieArrayList +
+                ", \n\n \tLinkedList " + movieLinkedList;
+    }
+
+    public void addMovie(Movie movieToAdd) {
+
+        for (Movie movie : movieArrayList) {
+            if (movie.getTitle().equalsIgnoreCase(movieToAdd.getTitle())) {
+                System.out.println();
+                System.out.println("'" + movieToAdd.getTitle() + "' is already in the lists!");
+                return;
+            }
+        }
+
+        System.out.println("Movie added:" + movieToAdd.toString());
+        movieArrayList.add(movieToAdd);
+        movieLinkedList.add(movieToAdd);
+    }
+
+
+    public void removeMovie(String title) {
+
+        Iterator<Movie> iterator = movieArrayList.iterator();
+        Iterator<Movie> iterator2 = movieLinkedList.iterator();
+
+
+        if (searchMovie(title)) {
+
+            while (iterator.hasNext()) {
+                Movie movie = iterator.next();
+                if (movie.getTitle().equalsIgnoreCase(title)) {
+                    iterator.remove();
+                    System.out.println("Movie removed from ArrayList: " + movie);
+                }
+            }
+
+            while (iterator2.hasNext()) {
+                Movie movie = iterator2.next();
+                if (movie.getTitle().equalsIgnoreCase(title)) {
+                    iterator2.remove();
+                    System.out.println();
+                    System.out.println("Movie removed from LinkedList: " + movie);
+                }
+            }
+        } else {
+            System.out.println("Movie " + "'" + title + "'" + " is not in the lists.");
+        }
+
+    }
+
+    // The below only looks for the movie in question in the ArrayList
+    // I will leave this as is, since when I am adding movies with addMovie, they are added into both lists.
+
+    public boolean searchMovie(String title) {
+        for (Movie movie : movieArrayList) {
+            if (movie.getTitle().equalsIgnoreCase(title)) {
+                System.out.println("Movie found: " + movie.toString());
+                return true;
+            }
+
+        }
+        if (movieArrayList.isEmpty()) {
+            System.out.println("\nMovie list is empty!");
+        }
+        return false;
+    }
+
+
+    public void displayMovies() {
+        System.out.println(toString());
+    }
+
+
+    public void printMenu() {
+        System.out.println("""
+                MENU:
+                \n Please enter:
+                                
+                \t(A)dd movie
+                \t(R)emove movie
+                \t(S)earch movie
+                \t(D)isplay movies
+                                
+                \t(M)enu
+                \t(Q)uit
+                """);
+    }
