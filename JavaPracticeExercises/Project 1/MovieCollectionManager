@@ -101,3 +101,73 @@ public class MovieCollectionManager {
                 \t(Q)uit
                 """);
     }
+
+
+    public static void menu() {
+
+
+        MovieCollectionManager col1 = new MovieCollectionManager();
+
+        col1.printMenu();
+
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+
+
+            String userResponse = scanner.nextLine();
+
+
+            if (userResponse.toUpperCase().charAt(0) == 'A') {
+
+                System.out.println("Adding a movie.");
+                System.out.println("Please type in movie title:");
+                String name = scanner.nextLine().toUpperCase();
+
+                System.out.println("Please type in movie director:");
+                String dude = scanner.nextLine().toUpperCase();
+
+                System.out.println("Please type in movie year:");
+                int god = 0;
+                boolean validInput = false;
+
+
+                while (!validInput) {
+                    try {
+                        god = scanner.nextInt();
+                        validInput = true;
+                    } catch (InputMismatchException e) {
+                        System.out.println("Invalid year. Enter again: ");
+                        scanner.next();
+                    }
+                }
+
+                scanner.nextLine();
+                col1.addMovie(new Movie(name, dude, god));
+
+            } else if (userResponse.toUpperCase().charAt(0) == 'D') {
+                col1.displayMovies();
+            } else if (userResponse.toUpperCase().charAt(0) == 'S') {
+                System.out.println("Searching for a movie. Please enter title: ");
+                String name = scanner.nextLine();
+                col1.searchMovie(name);
+            } else if (userResponse.toUpperCase().charAt(0) == 'R') {
+                System.out.println("Removing movie. Please enter title: ");
+                String name = scanner.nextLine();
+                col1.removeMovie(name);
+            } else if (userResponse.toUpperCase().charAt(0) == 'M') {
+                col1.printMenu();
+            } else if (userResponse.toUpperCase().charAt(0) == 'Q') {
+                scanner.close();
+                System.out.println("Quitting...");
+                break;
+            } else {
+                System.out.println("Input not recognized. Please try again or enter 'M' for Menu");
+            }
+
+
+        }
+    }
+
+
+}
